@@ -1,0 +1,31 @@
+body {
+    background: #333; /* Цвет фона */
+    color: #d8fdff; /* Цвет текста */
+   }
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+ul{
+    list-style: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+li{
+    margin: 0;
+    list-style: none;
+}
+
+a {
+    outline: none;
+    text-decoration: none;
+  
+  }

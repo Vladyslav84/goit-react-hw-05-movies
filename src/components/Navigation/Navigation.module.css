@@ -1,0 +1,16 @@
+.navLinks {
+    font-size: 30px;
+    color: white;
+
+}
+.activLink{
+    color: rgb(20, 219, 20);
+}
+.list{
+    display: flex;
+
+}
+
+.navLinks:not(:last-child){
+    margin-right: 30px;
+}
