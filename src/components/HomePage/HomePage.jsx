@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import s from './HomePage.module.css';
 
 
 const HomePage = () => {
@@ -19,14 +21,14 @@ const HomePage = () => {
 
             return response.data.results;
         }
-        getPopularMovies().then().then(moviesArr => setMovies(moviesArr));
+        getPopularMovies().then(moviesArr => setMovies(moviesArr));
 
     }, [])
-
+console.log(movies)
     return (
-        <>
-            {movies && movies.map(movie => <li key={movie.id}>{movie.title}</li>)}
-        </>
+        <ul>
+            {movies && movies.map(movie => <li key={movie.id} ><Link className={s.navLinks}>{movie.title}<span>Popularity</span>{movie.popularity}</Link></li>)}
+        </ul>
     )
 
 }

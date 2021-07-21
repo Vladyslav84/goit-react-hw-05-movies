@@ -1,6 +1,8 @@
 .navLinks {
     font-size: 30px;
     color: white;
+    outline: none;
+    text-decoration: none;
 
 }
 .activLink{
@@ -14,3 +16,4 @@
 .navLinks:not(:last-child){
     margin-right: 30px;
 }
+
