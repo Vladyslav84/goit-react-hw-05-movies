@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import s from './HomePage.module.css';
 
 
 const HomePage = () => {
-
+    const { url } = useRouteMatch();
     const [movies, setMovies] = useState()
 
     useEffect(() => {
@@ -24,10 +24,14 @@ const HomePage = () => {
         getPopularMovies().then(moviesArr => setMovies(moviesArr));
 
     }, [])
-console.log(movies)
+    console.log(movies)
     return (
         <ul>
-            {movies && movies.map(movie => <li key={movie.id} ><Link className={s.navLinks}>{movie.title}<span>Popularity</span>{movie.popularity}</Link></li>)}
+            {movies && movies.map(movie =>
+                <li key={movie.id} >
+                    <Link to={`/Movies/${ movie.id }`} className={s.navLinks}>{movie.title}<span>Popularity</span>{movie.vote_average}
+                    </Link>
+                </li>)}
         </ul>
     )
 

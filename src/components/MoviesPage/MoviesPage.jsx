@@ -1,57 +1,57 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
-// const movieId = 497698;
+import s from './MoviesPage.module.css'
 
 const MoviesPage = () => {
     const imgBasePath = 'https://image.tmdb.org/t/p/w500'
-    const [movieIdObj, setmovieIdObj] = useState()
-    const [movieImg, setmovieImg] = useState()
-    // const genres = movieIdObj.genres;
-    const movieId = 591273;
+    const [inputValue, setInputValue] = useState('')
+    const [submitValue, setSubmitValue] = useState('')
+    const [film, setFilm] = useState([])
+
     useEffect(() => {
-    const AUTH_TOKEN ='Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmJjZmE2MzcxZjJiNGM1MWE4ZGJiNjc0ZGJhMmJkMyIsInN1YiI6IjYwYmNiYzNmZWE4NGM3MDAyYWU3YTE0YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.anozZCItdqcbHyQtoH8Fm8ne3QlJGCSzSiJGIz6YtsQ';
-    axios.defaults.baseURL = 'https://api.themoviedb.org/3';
-    axios.defaults.headers.common.Authorization = AUTH_TOKEN;
-    const fetchMoviesId = async (movieId) => {
-        const response = await axios.get(`/movie/${movieId}?api_key=AUTH_TOKEN&language=en-US`);
-        return response.data;
-    }
-        fetchMoviesId(movieId).then(res => setmovieIdObj(res))
-        
-    // const fetchMoviesImg = async (movieId) => {
-    //     const response = await axios.get(`/movie/${movieId}/images?api_key=AUTH_TOKEN&language=en-US`);
-    //     return response.data
-    // }
-    //     fetchMoviesImg(movieId).then(res => setmovieImg(res))
-        // console.log(movieImg)
-},[])
-console.log(movieImg)
-    return (<>
-        {movieIdObj &&
-            <article>
-            <img src={imgBasePath + movieIdObj.poster_path} alt={movieIdObj.original_title} width="150" ></img>
-            <ul>
-                <li><h2>{movieIdObj.original_title}</h2>
-                </li>
-                <li><p>User score</p>
-                </li>
-                <li><h4>Overview:</h4>
-                    <p>{ movieIdObj.overview}</p>
-                </li>
-                <li><p>Genres:</p>
-                    <ul>{movieIdObj.genres.map(genre => <li key={genre.name}>{genre.name}</li>)}</ul>
-                </li>
-            </ul>
-            </article>
+        if (inputValue !== "")
+        {
+            const AUTH_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmJjZmE2MzcxZjJiNGM1MWE4ZGJiNjc0ZGJhMmJkMyIsInN1YiI6IjYwYmNiYzNmZWE4NGM3MDAyYWU3YTE0YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.anozZCItdqcbHyQtoH8Fm8ne3QlJGCSzSiJGIz6YtsQ';
+            axios.defaults.baseURL = 'https://api.themoviedb.org/3';
+            axios.defaults.headers.common.Authorization = AUTH_TOKEN;
+            const fetchMoviesSearch = async (submitValue) => {
+                const response = await axios.get(`/search/movie?api_key=AUTH_TOKEN&language=en-US&query=${ submitValue }&page=1&include_adult=false`);
+                return response.data;
+            }
+            fetchMoviesSearch(inputValue).then(res => setFilm(res))
         }
-        <hr />
-        <>Addition information</>
-    </>
+        // https://api.themoviedb.org/3/search/movie?api_key=<<api_key>>&language=en-US&query=ggg&page=1&include_adult=false
+    }, [submitValue])
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        // setSubmitValue(inputValue)
+        // setInputValue('');
+        console.log(inputValue);
+    }
+
+    const handleChange = (e) => {
+
+        setInputValue(e.target.value);
+    };
+    console.log();
+    console.log(film);
+    return (
+        <>
+            <button type="button">Go back</button>
+            <form onSubmit={handleSubmit}>
+                <input type="text"
+                    autoComplete="off"
+                    autoFocus
+                    value={inputValue}
+                    onChange={handleChange}
+                />
+                <button type='submit'> Search</button>
+            </form>
+        </>
 
     )
-    
+
 }
 
 export default MoviesPage;
