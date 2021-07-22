@@ -18,10 +18,10 @@ function App() {
       <Switch>
         <Route path='/' exact ><HomePage /></Route>
         <Route path='/Movies' exact><MoviesPage /></Route>
-        <Route path='/Movies/:movieId' exact><MovieDetailsPage /></Route>
-        <Route path='/Movies/:movieId/Casts' exact><Casts /></Route>
+        <Route path='/Movies/:movieId' ><MovieDetailsPage /></Route>
+        {/* <Route path='/Movies/:movieId/Casts' exact><Casts /></Route> */}
         {/* <Route path='/Movies/:movieId/Reviews' exact><Reviews /></Route> */}
-        
+
         <Route><h1> 404 Page not found</h1></Route>
       </Switch>
     </>
