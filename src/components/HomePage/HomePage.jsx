@@ -6,7 +6,7 @@ import s from './HomePage.module.css';
 
 
 const HomePage = () => {
-    const { url } = useRouteMatch();
+    // const { url } = useRouteMatch();
     const [movies, setMovies] = useState()
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const HomePage = () => {
         getPopularMovies().then(moviesArr => setMovies(moviesArr));
 
     }, [])
-    console.log(movies)
+    // console.log(movies)
     return (
         <ul>
             {movies && movies.map(movie =>

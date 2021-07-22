@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { NavLink, Route, useParams, useRouteMatch } from 'react-router-dom';
 import s from './MovieDetailsPage.module.css';
+import Casts from '../Cast/Cast';
 
 const MovieDetailsPage = () => {
+    const { url,path  } = useRouteMatch();
     const { movieId } = useParams();
     const imgBasePath = 'https://image.tmdb.org/t/p/w500'
     const [movieIdObj, setmovieIdObj] = useState();
-
+ console.log(url);
     useEffect(() => {
         const AUTH_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmJjZmE2MzcxZjJiNGM1MWE4ZGJiNjc0ZGJhMmJkMyIsInN1YiI6IjYwYmNiYzNmZWE4NGM3MDAyYWU3YTE0YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.anozZCItdqcbHyQtoH8Fm8ne3QlJGCSzSiJGIz6YtsQ';
         axios.defaults.baseURL = 'https://api.themoviedb.org/3';
@@ -21,7 +23,8 @@ const MovieDetailsPage = () => {
     }, [])
 
     return (<>
-        {movieIdObj &&
+       
+    {movieIdObj &&
             <article>
                 <img src={imgBasePath + movieIdObj.poster_path} alt={movieIdObj.original_title} width="150" ></img>
                 <ul>
@@ -38,15 +41,21 @@ const MovieDetailsPage = () => {
                 </ul>
             </article>
         }
-        <hr />
+    {movieIdObj && 
+    <>
+    <hr />
         <>Addition information</>
         <ul className={s.list}>
-            <li><Link to='/Cast'>Cast</Link></li>
-            <li><Link to='/Previews'>Previews</Link></li>
+                <li><NavLink to={`${url}/Casts`}>Casts</NavLink></li>
+            <li><NavLink to={`${url}`}>Reviews</NavLink></li>
         </ul>
-    </>
-
-    )
+            <Route path={`${url}/Casts`}exact>
+            <Casts />
+            </Route>
+    </>}
+   
+     </>
+)
 
 }
 
