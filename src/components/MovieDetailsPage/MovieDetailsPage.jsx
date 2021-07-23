@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { NavLink, Route, useParams, useRouteMatch, Switch } from 'react-router-dom';
 import s from './MovieDetailsPage.module.css';
 import Casts from '../Cast/Cast';
+import Reviews from '../Reviews/Reviews';
+import noPoster from '../../imagesDef/noposter.png'
+import * as api from '../../api/api';
 
 const MovieDetailsPage = () => {
     const { url, path } = useRouteMatch();
@@ -11,22 +13,15 @@ const MovieDetailsPage = () => {
     const [movieIdObj, setmovieIdObj] = useState();
 
     useEffect(() => {
-        const AUTH_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmJjZmE2MzcxZjJiNGM1MWE4ZGJiNjc0ZGJhMmJkMyIsInN1YiI6IjYwYmNiYzNmZWE4NGM3MDAyYWU3YTE0YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.anozZCItdqcbHyQtoH8Fm8ne3QlJGCSzSiJGIz6YtsQ';
-        axios.defaults.baseURL = 'https://api.themoviedb.org/3';
-        axios.defaults.headers.common.Authorization = AUTH_TOKEN;
-        const fetchMoviesId = async (movieId) => {
-            const response = await axios.get(`/movie/${ movieId }?api_key=AUTH_TOKEN&language=en-US`);
-            return response.data;
-        }
-        fetchMoviesId(movieId).then(res => setmovieIdObj(res))
-
+        api.fetchMoviesId(movieId).then(res => setmovieIdObj(res))
+// eslint-disable-next-line 
     }, [])
 
     return (<>
-
         {movieIdObj && <>
+          <button type="button">Go back</button>
             <article>
-                <img src={imgBasePath + movieIdObj.poster_path} alt={movieIdObj.original_title} width="150" ></img>
+                <img src={imgBasePath + movieIdObj.poster_path !== "https://image.tmdb.org/t/p/w500null"?imgBasePath + movieIdObj.poster_path: noPoster } alt={movieIdObj.original_title} width="150" ></img>
                 <ul>
                     <li><h2>{movieIdObj.original_title}</h2>
                     </li>
@@ -50,9 +45,9 @@ const MovieDetailsPage = () => {
                 <Route path={`${ path }/сast`} exact>
                     <Casts />
                 </Route>
-                {/* <Route path={`${ path }/reviews`} exact>
+                <Route path={`${ path }/reviews`} exact>
                     <Reviews />
-                </Route> */}
+                </Route>
             </Switch>
         </>}
 

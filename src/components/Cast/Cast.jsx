@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import defaultImg from '../../imagesDef/default-img.jpg';
+import * as api from '../../api/api';
 
 const Casts = () => {
     const { movieId } = useParams();
-    console.log(movieId)
     const imgBasePath = 'https://image.tmdb.org/t/p/w500'
     const [movieIdObj, setmovieIdObj] = useState();
     useEffect(() => {
-        const AUTH_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmJjZmE2MzcxZjJiNGM1MWE4ZGJiNjc0ZGJhMmJkMyIsInN1YiI6IjYwYmNiYzNmZWE4NGM3MDAyYWU3YTE0YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.anozZCItdqcbHyQtoH8Fm8ne3QlJGCSzSiJGIz6YtsQ';
-        axios.defaults.baseURL = 'https://api.themoviedb.org/3';
-        axios.defaults.headers.common.Authorization = AUTH_TOKEN;
-        const fetcCastsId = async (movieId) => {
-            const response = await axios.get(`/movie/${ movieId }/credits?api_key=AUTH_TOKEN&language=en-US`);
-            return response.data.cast;
-        }
-        fetcCastsId(movieId).then(res => setmovieIdObj(res));
+        api.fetcCastsId(movieId).then(res => setmovieIdObj(res));
     }, [movieId]);
-    console.log(movieIdObj);
+
+// console.log(movieIdObj)
     return (
+        
         <ul>
             {movieIdObj && movieIdObj.map(castItem =>
-                <li key={castItem.id}>
-                    <img src={imgBasePath + castItem.profile_path} width="50" alt={castItem.name}></img>
-                    <p>{castItem.name}</p>
-                    <p>{castItem.character}</p>
+                <li key={uuidv4()}>
+                    <img src={imgBasePath + castItem.profile_path !== "https://image.tmdb.org/t/p/w500null"? imgBasePath + castItem.profile_path:defaultImg } width="50" alt={castItem.name}></img>
+                    <p>Actor: {castItem.name}</p>
+                    <p>Character: {castItem.character}</p>
                 </li>)}
 
         </ul>
@@ -32,3 +28,4 @@ const Casts = () => {
 };
 
 export default Casts;
+
