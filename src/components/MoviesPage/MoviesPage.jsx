@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import s from './MoviesPage.module.css'
 import * as api from '../../api/api';
 
 const MoviesPage = () => {
-
+    const history = useHistory();
     const [submitValue, setSubmitValue] = useState('')
     const [film, setFilm] = useState([])
 
@@ -13,13 +13,14 @@ const MoviesPage = () => {
         {
             api.fetchMoviesSearch(submitValue).then(res => setFilm(res))
         }
-            setSubmitValue('');
-// eslint-disable-next-line 
+
+        // eslint-disable-next-line 
     }, [submitValue])
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
         setSubmitValue(evt.target.elements.inputName.value)
+        history.push(`/Movies/?query=${ evt.target.elements.inputName.value }`)
         evt.target.reset();
     }
 
@@ -30,17 +31,17 @@ const MoviesPage = () => {
                 <input type="text"
                     autoComplete="off"
                     autoFocus
-                    name = "inputName"
+                    name="inputName"
                 />
                 <button type='submit'> Search</button>
             </form>
 
-           <ul>
-            {film && film.map(film =>
-                <li key={film.id} >
-                    <Link to={`/Movies/${ film.id }`} className={s.navLinks}>{film.title}<span>Popularity</span>{film.vote_average}
-                    </Link>
-                </li>)}
+            <ul>
+                {film && film.map(film =>
+                    <li key={film.id} >
+                        <Link to={`/Movies/${ film.id }`} className={s.navLinks}>{film.title}<span>Popularity</span>{film.vote_average}
+                        </Link>
+                    </li>)}
             </ul>
         </>
 
