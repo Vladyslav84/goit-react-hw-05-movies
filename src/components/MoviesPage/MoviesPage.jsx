@@ -4,6 +4,7 @@ import s from './MoviesPage.module.css'
 import * as api from '../../api/api';
 
 const MoviesPage = () => {
+    const location = useLocation();
     const history = useHistory();
     const [submitValue, setSubmitValue] = useState('')
     const [film, setFilm] = useState([])
@@ -14,8 +15,17 @@ const MoviesPage = () => {
             api.fetchMoviesSearch(submitValue).then(res => setFilm(res))
         }
 
-        // eslint-disable-next-line 
     }, [submitValue])
+
+    useEffect(() => {
+        if (location.search.slice(7) !== submitValue)
+        {
+            api.fetchMoviesSearch(location.search.slice(7)).then(res => setFilm(res));
+
+        }
+
+        // eslint-disable-next-line 
+    }, [location.search.slice(7)])
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
@@ -26,7 +36,6 @@ const MoviesPage = () => {
 
     return (
         <>
-            {film.length !== 0 && <button type="button">Go back</button>}
             <form onSubmit={handleSubmit}>
                 <input type="text"
                     autoComplete="off"
@@ -39,7 +48,11 @@ const MoviesPage = () => {
             <ul>
                 {film && film.map(film =>
                     <li key={film.id} >
-                        <Link to={`/Movies/${ film.id }`} className={s.navLinks}>{film.title}<span>Popularity</span>{film.vote_average}
+                        <Link to={{
+                            pathname: `/Movies/${ film.id }`,
+                            state: { params: `/Movies/?query=${ location.search.slice(7) }` },
+
+                        }} className={s.navLinks}>{film.title}
                         </Link>
                     </li>)}
             </ul>
