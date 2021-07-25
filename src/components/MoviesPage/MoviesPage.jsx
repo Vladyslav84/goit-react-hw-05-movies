@@ -3,7 +3,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import s from './MoviesPage.module.css'
 import * as api from '../../api/api';
 
-const MoviesPage = () => {
+export default function MoviesPage() {
     const location = useLocation();
     const history = useHistory();
     const [submitValue, setSubmitValue] = useState('')
@@ -62,4 +62,4 @@ const MoviesPage = () => {
 
 }
 
-export default MoviesPage;
+// export default MoviesPage;

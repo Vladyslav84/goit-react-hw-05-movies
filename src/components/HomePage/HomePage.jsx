@@ -4,7 +4,7 @@ import s from './HomePage.module.css';
 import * as api from '../../api/api';
 
 
-const HomePage = () => {
+export default function HomePage() {
     const [movies, setMovies] = useState();
     const location = useLocation();
 
@@ -27,5 +27,5 @@ const HomePage = () => {
 
 }
 
-export default HomePage;
+// export default HomePage;
 

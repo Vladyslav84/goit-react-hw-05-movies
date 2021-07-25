@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import {
     NavLink,
     Route,
@@ -10,13 +10,15 @@ import {
 
 } from 'react-router-dom';
 import s from './MovieDetailsPage.module.css';
-import Casts from '../Cast/Cast';
-import Reviews from '../Reviews/Reviews';
+// import Casts from '../Cast/Cast';
+// import Reviews from '../Reviews/Reviews';
 import noPoster from '../../imagesDef/noposter.png'
 import * as api from '../../api/api';
 
+const Casts = lazy(() => import('../Cast/Cast.jsx' /* webpackChunkName: "Casts" */));
+const Reviews = lazy(() => import('../Reviews/Reviews.jsx' /* webpackChunkName: "Reviews" */));
 
-const MovieDetailsPage = () => {
+export default function MovieDetailsPage() {
 
     const routerState = useRef(null);
     const location = useLocation();
@@ -35,12 +37,11 @@ const MovieDetailsPage = () => {
 
     const handleGoBack = () => {
         history.push(routerState.current.params ?? '/');
-
-
     }
 
     useEffect(() => {
         api.fetchMoviesId(movieId).then(res => setmovieIdObj(res))
+
         // eslint-disable-next-line 
     }, [])
 
@@ -68,14 +69,16 @@ const MovieDetailsPage = () => {
                 <li><NavLink to={`${ url }/сast`}>Casts</NavLink></li>
                 <li><NavLink to={`${ url }/reviews`}>Reviews</NavLink></li>
             </ul>
-            <Switch>
-                <Route path={`${ path }/сast`} exact>
-                    <Casts />
-                </Route>
-                <Route path={`${ path }/reviews`} exact>
-                    <Reviews />
-                </Route>
-            </Switch>
+            <Suspense fallback={<p>loading...</p>}>
+                <Switch>
+                    <Route path={`${ path }/сast`} exact>
+                        <Casts />
+                    </Route>
+                    <Route path={`${ path }/reviews`} exact>
+                        <Reviews />
+                    </Route>
+                </Switch>
+            </Suspense>
         </>}
 
     </>
@@ -83,5 +86,5 @@ const MovieDetailsPage = () => {
 
 }
 
-export default MovieDetailsPage;
+// export default MovieDetailsPage;
 
