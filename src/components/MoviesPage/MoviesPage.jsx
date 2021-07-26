@@ -8,6 +8,8 @@ export default function MoviesPage() {
     const history = useHistory();
     const [submitValue, setSubmitValue] = useState('')
     const [film, setFilm] = useState([])
+    let params = new URLSearchParams(location.search);
+    let query = params.get('query')
 
     useEffect(() => {
         if (submitValue !== "")
@@ -18,22 +20,24 @@ export default function MoviesPage() {
     }, [submitValue])
 
     useEffect(() => {
-        if (location.search.slice(7) !== submitValue)
+        if (query !== null && query !== submitValue)
         {
-            api.fetchMoviesSearch(location.search.slice(7)).then(res => setFilm(res));
-
+            api.fetchMoviesSearch(query).then(res => setFilm(res));
         }
-
         // eslint-disable-next-line 
-    }, [location.search.slice(7)])
+    }, [query])
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
         setSubmitValue(evt.target.elements.inputName.value)
-        history.push(`/Movies/?query=${ evt.target.elements.inputName.value }`)
+        // history.push(`/Movies/?query=${ evt.target.elements.inputName.value }`)
+        history.push({
+            pathname: location.pathname,
+            search: `?query=${ evt.target.elements.inputName.value }`,
+        })
         evt.target.reset();
-    }
-
+      }
+    
     return (
         <>
             <form onSubmit={handleSubmit}>
@@ -50,7 +54,7 @@ export default function MoviesPage() {
                     <li key={film.id} >
                         <Link to={{
                             pathname: `/Movies/${ film.id }`,
-                            state: { params: `/Movies/?query=${ location.search.slice(7) }` },
+                            state: { params: `/Movies/?query=${ query }` },
 
                         }} className={s.navLinks}>{film.title}
                         </Link>
