@@ -12,7 +12,6 @@ export async function fetcReviews (movieId)  {
     
      } catch (error) {
          alert(error.massage)
-    
     }
 };
 

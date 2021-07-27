@@ -1,0 +1,20 @@
+{
+    "emmet.preferences": {
+
+
+
+    
+    },
+    "terminal.integrated.env.windows": {
+    
+    },
+    "auto-rename-tag.activationOnLanguage": [
+
+        "*"
+    ],
+    "json.schemas": [
+    
+    ],
+    "terminal.integrated.automationShell.windows": "",
+    
+}

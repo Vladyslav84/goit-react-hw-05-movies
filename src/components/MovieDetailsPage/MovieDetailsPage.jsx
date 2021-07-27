@@ -36,7 +36,7 @@ export default function MovieDetailsPage() {
 
 
     const handleGoBack = () => {
-        history.push(routerState.current.params ?? '/');
+        history.push(routerState.current?.params ?? '/');
     }
 
     useEffect(() => {
